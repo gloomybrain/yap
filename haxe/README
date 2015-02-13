@@ -1,0 +1,15 @@
+Этот проект позволяет создавать крутые динамические опердени на haxe, компилируя их сразу в JavaScript и Flash (swc).
+
+Сборка:
+
+```
+cd build && haxe build.hxml
+```
+
+Будут созданы два файла:
+- build/lib/demo.swc
+- build/lib/demo.js
+
+Пример использования - index.html
+
+да просто так

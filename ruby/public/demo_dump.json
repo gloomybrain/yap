@@ -1,0 +1,22 @@
+{
+  "integer": 87,
+  "number": 1.423421e-3,
+  "string": "Hello, sweety!",
+  "bool": true,
+
+  "bare_array": [1, 2, 3],
+  "complex_array": [ {"x": 10, "y": 20}, {"x": -5, "y": -3}, null ],
+
+  "bare_map": { "a": "x", "b": "x", "c": "?"},
+  "complex_map": { "uno": { "x": false }, "due": { "x": true }, "nothing": null },
+
+  "coords": { "x": 5, "y": -10.4 },
+  "inner": {
+    "integer": 194,
+    "string": "Inside level 2.",
+    "object": { "x": 18, "y": "string", "z": [3,2,1] },
+    "coords": { "x": -1, "y": 2 }
+  },
+
+  "nothing": null
+  }

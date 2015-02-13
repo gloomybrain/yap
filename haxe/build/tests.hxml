@@ -1,0 +1,33 @@
+-cp ../tests
+-cp ../src
+-neko ../out/tests.n
+-main TestsMain
+-D tests
+
+--next
+
+-cp ../tests
+-cp ../src
+-js ../out/tests.js
+-main TestsMain
+-D tests
+
+--next
+
+-cp ../tests
+-cp ../src
+-main TestsMain
+-as3 ../out/as3src
+-D tests
+
+--next
+
+-cp ../tests
+-cp ../src
+-swf ../out/tests.swf
+-main TestsMain
+--flash-strict
+-debug
+-D fdb
+-D native-trace
+-D tests

@@ -1,0 +1,30 @@
+{
+  "name": "demo_clash",
+  "version": "0.0.1",
+  "description": "Demo project, which main purpose is to test & implement some cool technical features",
+  "main": "App.js",
+  "repository": {
+    "type": "git",
+    "url": "git@git.burlutskiy.me:demo_clash.git"
+  },
+  "dependencies": {
+    "optimist": "0.6.0",
+    "js-yaml": "3.2.3"
+  },
+  "devDependencies": {
+	"mocha": "1.17.1",
+    "should": "4.6.2"
+  },
+  "scripts":
+  {
+	"test": "mocha"
+  },
+  "keywords": [
+    "awesome",
+    "perfect",
+    "insane",
+    "addicted"
+  ],
+  "author": "",
+  "license": "ISC"
+}

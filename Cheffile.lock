@@ -1,0 +1,49 @@
+SITE
+  remote: http://community.opscode.com/api/v1
+  specs:
+    7-zip (1.0.2)
+      windows (>= 1.2.2)
+    apt (2.6.0)
+    ark (0.9.0)
+      7-zip (>= 0.0.0)
+      windows (>= 0.0.0)
+    build-essential (2.1.3)
+    chef_handler (1.1.6)
+    dmg (2.2.2)
+    git (4.0.2)
+      build-essential (>= 0.0.0)
+      dmg (>= 0.0.0)
+      runit (>= 1.0.0)
+      windows (>= 0.0.0)
+      yum (~> 3.0)
+      yum-epel (>= 0.0.0)
+    nodejs (2.2.0)
+      apt (>= 0.0.0)
+      ark (>= 0.0.0)
+      build-essential (>= 0.0.0)
+      yum-epel (>= 0.0.0)
+    runit (1.5.10)
+      build-essential (>= 0.0.0)
+      yum (~> 3.0)
+      yum-epel (>= 0.0.0)
+    vim (1.1.2)
+    windows (1.34.8)
+      chef_handler (>= 0.0.0)
+    yum (3.5.1)
+    yum-epel (0.5.3)
+      yum (~> 3.0)
+
+GIT
+  remote: https://github.com/fnichol/chef-ruby_build
+  ref: master
+  sha: 4d3361995a6953076951693eff1b326ab499fe1e
+  specs:
+    ruby_build (0.8.1)
+
+DEPENDENCIES
+  apt (>= 0)
+  git (>= 0)
+  nodejs (~> 2.2.0)
+  ruby_build (>= 0)
+  vim (>= 0)
+

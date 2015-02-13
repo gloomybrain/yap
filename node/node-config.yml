@@ -1,0 +1,7 @@
+logicPath: '../haxe/out/'
+defaultVersion: '1'
+allowedExchangables:
+  - gifts
+  - wishes
+allowedActions:
+  - cheats

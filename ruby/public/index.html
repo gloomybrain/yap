@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Demo</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="resources/bootstrap-3.3.2-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="resources/jsoneditor-3.1.2/jsoneditor.min.css">
+
+        <script src="resources/jquery-1.11.2.min.js"></script>
+        <script src="resources/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+        <script src="resources/bootstrap-growl.min.js"></script>
+        <script src="resources/jsoneditor-3.1.2/jsoneditor.min.js"></script>
+        <script src="Context.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>HAXE Shared Logic Demo</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>
+                                <button class="btn btn-default command-button" id="incrementInteger">increment integer</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-default query-button" id="getInteger">get integer</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-default command-button" id="pushBareArray">push bare array</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-default command-button" id="popBareArray">pop bare array</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-default query-button" id="getBareArrayLength">get bare array length</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-default command-button" id="setNothingToNull">set nothing to null</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-default command-button" id="setNothingToValue">set nothing to value</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-default command-button" id="shuffleArray">shuffle bare array</button>
+                            </p>
+                            <p>
+                                <button class="btn btn-success" id="saveButton">Save</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Dump</h4>
+                            <div id="dumpJsonEditor" style="width: 100%; height: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Result</h4>
+                            <div id="resultJsonEditor" style="width: 100%; height: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var dumpEditorContainer = document.getElementById("dumpJsonEditor");
+            var dumpEditor = new JSONEditor(dumpEditorContainer);
+
+            var resultEditorContainer = document.getElementById("resultJsonEditor");
+            var resultEditor = new JSONEditor(resultEditorContainer);
+        </script>
+        <script>
+            var test_dump = null;
+            var context = null;
+            var batch = [];
+
+            $(document).ready(function(){
+              $.ajax({
+                url: '/v1/demo/demo-dump.json',
+                type: 'get',
+                dataType: 'json'
+              }).success(function(data){
+                test_dump = JSON.parse(data);
+
+                context = new Context(new Environment());
+                context.fromDump(test_dump);
+
+                dumpEditor.set(context.toDump());
+              })
+            });
+
+
+            function Environment()
+            {
+                this.getTime = function() { return (new Date()).getTime() };
+                this.createExchange = function() {};
+                this.useExchange = function() {};
+                this.log = function() {};
+                this.isActionAllowed = function() { return true; };
+                this.commit = function() { return null; };
+                this.rollback = function() {};
+            }
+
+            function execute(name, params)
+            {
+                context.fromDump(dumpEditor.get());
+                var cmdResult = context.execute(name, params);
+
+                if (cmdResult.error == null)
+                {
+                    batch.push({
+                        name: name,
+                        params: params,
+                        hash: cmdResult.hash
+                    });
+                }
+
+                resultEditor.set(cmdResult);
+                dumpEditor.set(context.toDump());
+            }
+
+            function query(name, params)
+            {
+                context.fromDump(dumpEditor.get());
+                resultEditor.set(context.query(name, params));
+            }
+        </script>
+        <script>
+            $(".command-button").click(function(){
+                execute($(this).attr('id'));
+            });
+
+            $(".query-button").click(function(){
+                query($(this).attr('id'));
+            });
+
+            document.getElementById('saveButton').onclick = function()
+            {
+                function showErrorGrowl(error)
+                {
+                    if(!error) error = "";
+
+                    $.growl({
+                        title: "<strong>=(</strong> ",
+                        message: "Something went wrong!\n" + error
+                    },{
+                        type: "danger",
+                        placement: {
+                            from: "bottom",
+                            align: "left"
+                        }
+                    });
+                }
+
+                var commands = batch;
+                batch = [];
+
+                $.post('/v1/demo/apply-commands', {
+                    commands: JSON.stringify(commands)
+                }).success(function(data)
+                {
+                    var result = JSON.parse(data);
+
+                    if (result.error != null)
+                    {
+                        showErrorGrowl(result.error);
+                    }
+                    else
+                    {
+                        $.growl({
+                            title: "<strong>=)</strong> ",
+                            message: "O.K."
+                        },{
+                            type: "success",
+                            placement: {
+                                from: "bottom",
+                                align: "left"
+                            }
+                        });
+                    }
+                }).fail(function()
+                {
+                    showErrorGrowl();
+                });
+            }
+        </script>
+    </body>
+</html>

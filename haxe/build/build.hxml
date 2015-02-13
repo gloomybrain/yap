@@ -1,0 +1,28 @@
+# build swc library
+-cp ../src
+-swf ../out/Context.swc
+--macro include('core')
+
+
+--next
+
+
+# build swf Context for fun
+-D native-trace
+-D fdb
+-cp ../src
+-swf ../out/Context.swf
+-main Context
+-debug
+
+
+--next
+
+
+# build NodeJS module
+-cp ../src
+-js ../out/Context.js
+-main Context
+
+# copy js context to ruby/public
+-cmd cp ../out/Context.js ../../ruby/public

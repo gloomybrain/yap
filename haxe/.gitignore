@@ -1,0 +1,6 @@
+build/lib/*.js
+build/lib/*.swc
+build/tests/*
+!build/tests/.gitkeep
+out/*
+!out/.gitkeep

@@ -1,0 +1,5 @@
+.vagrant
+cookbooks
+.DS_Store
+tmp
+ruby/public/Context.js
